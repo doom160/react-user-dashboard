@@ -14,8 +14,10 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
@@ -23,6 +25,7 @@ import AvatarList from './AvatarList';
 import Charts from './Charts';
 import Deposits from './Deposits';
 import Orders from './Orders';
+import Table from './Table';
 
 function Copyright() {
   return (
@@ -34,6 +37,30 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
+  );
+}
+
+const colHeader = [
+  { title: "Id", field: "id" },
+  { title: "Name", field: "name" },
+  { title: "Login", field: "login" },
+  { title: "Salary", field: "salary", type: "currency", customFilterAndSearch: (term, rowData) => term <= rowData.salary, filterPlaceholder: "Min Salary" }
+];
+
+function EmployeeTable() {
+  const [data, setData] = React.useState([])
+
+  React.useEffect(() => {
+    fetch("http://localhost:8080/users")
+      .then(res => res.json())
+      .then(res => setData(res.result))
+      .catch(err => console.log(err.message))
+  }, [])
+
+  return (
+    <div>
+      <Table col={colHeader} data={data.filter( function (user) { return  user => user.salary >= 15000  })} />
+    </div>
   );
 }
 
@@ -119,6 +146,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Dashboard() {
+  React.state = {minSalary: 0, maxSalary: 12000};
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -128,6 +156,13 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  const minHandleChange = (event) => {    
+    React.state.minSalary = event.target.value;  
+  };
+  const maxHandleChange = (event) => {    
+    React.state.maxSalary = event.target.value; 
+  };
 
   return (
     <div className={classes.root}>
@@ -177,24 +212,46 @@ export default function Dashboard() {
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
             {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
+         {/*   <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
                 <Charts />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
+        {/*    <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
                 <Deposits />
               </Paper>
-            </Grid>
+            </Grid> */}
             {/* Recent Orders */}
-            <Grid item xs={12}>
+        {/*    <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Orders />
               </Paper>
+            </Grid> */}
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Grid container spacing={1} alignItems="flex-end">
+                  <Grid item>
+                    <AttachMoneyIcon />
+                  </Grid>
+                  <Grid item>
+                    <TextField id="minsalary" label="Min Salary" value={React.state.minSalary} onChange={minHandleChange} />
+                  </Grid>
+                  <Grid item>
+                    <AttachMoneyIcon />
+                  </Grid>
+                  <Grid item>
+                    <TextField id="maxsalary" label="Max Salary" value={React.state.maxSalary} onChange={maxHandleChange}  />
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid> 
+            <Grid item xs={12}>
+              <EmployeeTable />
             </Grid>
           </Grid>
+          
           <Box pt={4}>
             <Copyright />
           </Box>
