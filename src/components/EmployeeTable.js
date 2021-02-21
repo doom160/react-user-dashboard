@@ -1,4 +1,6 @@
 import React, { useState, useEffect  } from 'react'
+import Snackbar from '@material-ui/core/Snackbar';
+
 import MaterialTable from 'material-table'
 
 const axios = require('axios');
@@ -13,6 +15,8 @@ const colHeader = [
 {/* data.filter( user => user.salary >= (parseFloat(minSalary)||0) && user.salary <= (parseFloat(maxSalary)||99999 */}
 
 var data = [];
+var message = "";
+var status = "" ;
 
 axios.get('http://localhost:8080/users')
 .then(function (response) {
@@ -25,6 +29,15 @@ axios.get('http://localhost:8080/users')
 
 
 const EmployeeTable = props => {
+  const [SnackbarState, setSnackbarState] = React.useState({
+    open: false,
+    message: ""
+  });
+
+  const handleClose = () => {
+    setSnackbarState({ ...SnackbarState, open: false });
+  };
+
   const [gridData, setGridData] = useState({
     data: data.filter( user => (user.salary >= (parseFloat(props.minSalary)||0) && user.salary <= (parseFloat(props.maxSalary)||99999))) ,
     columns: colHeader,
@@ -33,49 +46,59 @@ const EmployeeTable = props => {
   });
 
   gridData.data = data.filter( user => (user.salary >= (parseFloat(props.minSalary)||0) && user.salary <= (parseFloat(props.maxSalary)||99999)))
-  console.log(gridData.data)
-  console.log( (parseFloat(props.minSalary)||0) + " " + (parseFloat(props.maxSalary)||99999) )
-  console.log(data)
   useEffect(() => {
     gridData.resolve();
    }, [gridData]);
 
   const onRowAdd = newData =>
     new Promise((resolve, reject) => {
-      let res = axios.post("http://localhost:8080/users", newData);
-      if(res.status == "200"){
-        data.push(newData);
-        const updatedAt = new Date();
-        setGridData({ ...gridData, data, updatedAt, resolve });
-      } else {
-
-      }
+      setTimeout(() => {
+        resolve();
+        axios.post("http://localhost:8080/users", newData).then( res => {
+          setSnackbarState({ open: true, message: "Successfully added" });
+          data.push(newData);
+          const updatedAt = new Date();
+          setGridData({ ...gridData, data, updatedAt, resolve });
+        }).catch(error => { 
+          setSnackbarState({ open: true, message: error.response.data.message });
+        });
+      }, 600);
     });
 
   const onRowUpdate = (newData, oldData) =>
     new Promise((resolve, reject) => {
-      // Copy current state data to a new array
-      // Get edited row index
-      let res = axios.patch("http://localhost:8080/users/" + oldData.id, newData);
-      if(res.status == "200"){
-        const index = data.indexOf(oldData);
-        // replace old data
-        data[index] = newData;
-        // update state with the new array
-        const updatedAt = new Date();
-        setGridData({ ...gridData, data, updatedAt, resolve });
-      }     
+      setTimeout(() => {
+        resolve();
+        axios.patch("http://localhost:8080/users/" + oldData.id, newData).then( res => {
+            setSnackbarState({ open: true, message: "Successfully updated" });
+            // Copy current state data to a new array
+            // Get edited row index
+            const index = data.indexOf(oldData);
+            // replace old data
+            data[index] = newData;
+            // update state with the new array
+            const updatedAt = new Date();
+            setGridData({ ...gridData, data, updatedAt, resolve });
+        }).catch(error => { 
+          setSnackbarState({ open: true, message: error.response.data.message });
+        });
+      },600);   
     });
 
   const onRowDelete = oldData =>
     new Promise((resolve, reject) => {
-      let res = axios.delete("http://localhost:8080/users/" + oldData.id);
-      if(res.status == "200"){
-        const index = data.indexOf(oldData);
-        data.splice(index, 1);
-        const updatedAt = new Date();
-        setGridData({ ...gridData, data, updatedAt, resolve });
-      }
+      resolve();
+      setTimeout(() => {
+          axios.delete("http://localhost:8080/users/" + oldData.id).then( res => {
+          setSnackbarState({ open: true, message: "Successfully deleted" });
+          const index = data.indexOf(oldData);
+          data.splice(index, 1);
+          const updatedAt = new Date();
+          setGridData({ ...gridData, data, updatedAt, resolve });
+          }).catch(error => {
+            setSnackbarState({ open: true, message: error.response.data.message });
+        });
+      },600); 
     });
 
   return (
@@ -97,6 +120,7 @@ const EmployeeTable = props => {
           onRowDelete: onRowDelete
         }}
       />
+      <Snackbar open={SnackbarState.open} autoHideDuration={2500} message={SnackbarState.message} onClose={handleClose} />
     </>
   );
 };
