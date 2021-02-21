@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
       color: theme.palette.getContrastText(indigo[500]),
       backgroundColor: indigo[500],
+      width: theme.spacing(3),
+      height: theme.spacing(3),
+      fontSize: 10,
     },
   }));
 

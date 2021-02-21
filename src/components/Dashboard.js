@@ -21,15 +21,18 @@ import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import AvatarList from './AvatarList';
+import { debounce } from "lodash";
 import Charts from './Charts';
 import Deposits from './Deposits';
 import Orders from './Orders';
-import Table from './Table';
+import EmployeeTable from './EmployeeTable';
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
+      <br/>
       {'Copyright © '}
       <Link color="inherit" href="https://material-ui.com/">
         Your Website
@@ -44,25 +47,8 @@ const colHeader = [
   { title: "Id", field: "id" },
   { title: "Name", field: "name" },
   { title: "Login", field: "login" },
-  { title: "Salary", field: "salary", type: "currency", customFilterAndSearch: (term, rowData) => term <= rowData.salary, filterPlaceholder: "Min Salary" }
+  { title: "Salary", field: "salary", type: "currency" }
 ];
-
-function EmployeeTable() {
-  const [data, setData] = React.useState([])
-
-  React.useEffect(() => {
-    fetch("http://localhost:8080/users")
-      .then(res => res.json())
-      .then(res => setData(res.result))
-      .catch(err => console.log(err.message))
-  }, [])
-
-  return (
-    <div>
-      <Table col={colHeader} data={data.filter( function (user) { return  user => user.salary >= 15000  })} />
-    </div>
-  );
-}
 
 const drawerWidth = 240;
 
@@ -145,8 +131,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function UserInput({ type, label /*...*/ }) {
+  const [value, setValue] = React.useState("");
+  const input = <TextField value={value} onChange={e => setValue(e.target.value)} type={type} label={label} InputProps={{startAdornment: (
+    <InputAdornment position="start">
+      <AttachMoneyIcon />
+    </InputAdornment>
+  ),}}/>;
+
+  return [value, input];
+}
+
 export default function Dashboard() {
-  React.state = {minSalary: 0, maxSalary: 12000};
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -155,14 +151,10 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+  
+  const [minSalary, minSalaryInput] = UserInput({ type: "text", label: "Min Salary" });
+  const [maxSalary, maxSalaryInput] = UserInput({ type: "text", label: "Max Salary" });
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const minHandleChange = (event) => {    
-    React.state.minSalary = event.target.value;  
-  };
-  const maxHandleChange = (event) => {    
-    React.state.maxSalary = event.target.value; 
-  };
 
   return (
     <div className={classes.root}>
@@ -233,27 +225,20 @@ export default function Dashboard() {
               <Paper className={classes.paper}>
                 <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
-                    <AttachMoneyIcon />
+                    {minSalaryInput}
                   </Grid>
                   <Grid item>
-                    <TextField id="minsalary" label="Min Salary" value={React.state.minSalary} onChange={minHandleChange} />
-                  </Grid>
-                  <Grid item>
-                    <AttachMoneyIcon />
-                  </Grid>
-                  <Grid item>
-                    <TextField id="maxsalary" label="Max Salary" value={React.state.maxSalary} onChange={maxHandleChange}  />
+                    {maxSalaryInput}
                   </Grid>
                 </Grid>
               </Paper>
             </Grid> 
             <Grid item xs={12}>
-              <EmployeeTable />
+              <EmployeeTable minSalary={minSalary} maxSalary={maxSalary} />
             </Grid>
           </Grid>
-          
           <Box pt={4}>
-            <Copyright />
+            {Copyright}
           </Box>
         </Container>
       </main>
