@@ -9,9 +9,9 @@ Completed
 * Task 1: [Upload Users](https://github.com/doom160/springboot-user-service)
 * Task 2: Employee Dashboard Feature
 * Task 3: CRUD Feature
+* Task 4: Better UX When Uploading Large CSV Files (Partially complete)
 
 Future
-* Task 4: Better UX When Uploading Large CSV Files
 * Task 5: UI Localization
 
 ## Project Screen Shots
