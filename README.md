@@ -16,10 +16,10 @@ Future
 
 ## Project Screen Shots
 
-**Desktop View**
+**Desktop View**\
 ![Desktop](screenshots/desktop.JPG?raw=true 'Desktop')
 
-**Mobile View**
+**Mobile View**\
 ![Mobile](screenshots/mobile.JPG?raw=true 'Mobile')
 
 ## Installation and Setup Instructions
@@ -55,5 +55,3 @@ Your backend should be running too.
     _Despite having years of programming background in the past, the transition to DevOps position has set me back on programming trends. Nevertheless, although I do not have rich background in React and Springboot experience, my programming foundation still stands. I managed to quickly pick up these 2 framework and developed the whole solution with my own effort with examples from internet. I have bettered understood how React and Springboot development works._
   - **What were some unexpected obstacles?**
     _I was stucked with React UI portion, namely on the performance. I had a hard time dealing with the state and hooks as the app kept fetching from backend, which I had to look for ways to populate only once. Another problem was handling textbox onChange events, as it kept rendering although I do not need it. I had to introduce a button and memotize the table to reduce the load._
-  - **What tools did you use to implement this project?**
-      - This might seem obvious because you are IN this codebase, but to all other humans now is the time to talk about why you chose webpack instead of create react app, or D3, or vanilla JS instead of a framework etc. Brag about your choices and justify them here.  
