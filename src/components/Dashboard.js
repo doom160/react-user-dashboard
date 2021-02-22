@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -23,10 +24,6 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AvatarList from './AvatarList';
-import { debounce } from "lodash";
-import Charts from './Charts';
-import Deposits from './Deposits';
-import Orders from './Orders';
 import EmployeeTable from './EmployeeTable';
 
 function Copyright() {
@@ -50,6 +47,7 @@ const colHeader = [
   { title: "Salary", field: "salary", type: "currency" }
 ];
 
+const MemoizedEmployeeTable = React.memo(EmployeeTable);
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -154,7 +152,11 @@ export default function Dashboard() {
   
   const [minSalary, minSalaryInput] = UserInput({ type: "text", label: "Min Salary" });
   const [maxSalary, maxSalaryInput] = UserInput({ type: "text", label: "Max Salary" });
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  /*const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight); */
+  const [filterValue, updateTableValue] = React.useState({minSalaryValue:0, maxSalaryValue:999999});
+  const updateTable = () => {
+    updateTableValue({minSalaryValue: minSalary,maxSalaryValue: maxSalary});
+  };
 
   return (
     <div className={classes.root}>
@@ -193,7 +195,7 @@ export default function Dashboard() {
           </IconButton>
         </div>
         <Divider />
-        <List><AvatarList /></List>
+        <List><AvatarList/></List>
         <Divider />
         <List>{mainListItems}</List>
         <Divider />
@@ -203,24 +205,6 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
-         {/*   <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Charts />
-              </Paper>
-            </Grid> */}
-            {/* Recent Deposits */}
-        {/*    <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-                <Deposits />
-              </Paper>
-            </Grid> */}
-            {/* Recent Orders */}
-        {/*    <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid> */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Grid container spacing={1} alignItems="flex-end">
@@ -230,11 +214,16 @@ export default function Dashboard() {
                   <Grid item>
                     {maxSalaryInput}
                   </Grid>
+                  <Grid item>
+                    <Button variant="contained" color="primary" onClick={updateTable}>
+                      Filter
+                    </Button>
+                  </Grid>
                 </Grid>
               </Paper>
             </Grid> 
             <Grid item xs={12}>
-              <EmployeeTable minSalary={minSalary} maxSalary={maxSalary} />
+              <MemoizedEmployeeTable minSalary={filterValue.minSalaryValue} maxSalary={filterValue.maxSalaryValue} />
             </Grid>
           </Grid>
           <Box pt={4}>

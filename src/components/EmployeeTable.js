@@ -12,16 +12,11 @@ const colHeader = [
   { title: "Salary", field: "salary", type: "currency" }
 ];
 
-{/* data.filter( user => user.salary >= (parseFloat(minSalary)||0) && user.salary <= (parseFloat(maxSalary)||99999 */}
-
 var data = [];
-var message = "";
-var status = "" ;
 
-axios.get('http://localhost:8080/users')
+axios.get( process.env.REACT_APP_BACKEND_URL + '/users')
 .then(function (response) {
   data  = response.data.result;
-  console.log(data);
 })
 .catch(function (error) {
   console.log(error);
@@ -54,7 +49,7 @@ const EmployeeTable = props => {
     new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve();
-        axios.post("http://localhost:8080/users", newData).then( res => {
+        axios.post(process.env.REACT_APP_BACKEND_URL +"/users", newData).then( res => {
           setSnackbarState({ open: true, message: "Successfully added" });
           data.push(newData);
           const updatedAt = new Date();
@@ -69,7 +64,7 @@ const EmployeeTable = props => {
     new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve();
-        axios.patch("http://localhost:8080/users/" + oldData.id, newData).then( res => {
+        axios.patch( process.env.REACT_APP_BACKEND_URL + "/users/" + oldData.id, newData).then( res => {
             setSnackbarState({ open: true, message: "Successfully updated" });
             // Copy current state data to a new array
             // Get edited row index
@@ -89,7 +84,7 @@ const EmployeeTable = props => {
     new Promise((resolve, reject) => {
       resolve();
       setTimeout(() => {
-          axios.delete("http://localhost:8080/users/" + oldData.id).then( res => {
+          axios.delete(process.env.REACT_APP_BACKEND_URL + "/users/" + oldData.id).then( res => {
           setSnackbarState({ open: true, message: "Successfully deleted" });
           const index = data.indexOf(oldData);
           data.splice(index, 1);

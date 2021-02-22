@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+## Employee Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An application used to filter data from [springboot-user-service](https://github.com/doom160/springboot-user-service). It is developed with React using components from MaterialUI and MaterialTable.
 
-## Available Scripts
+Users can also insert, update, delete, sort, filter with min and max salary range. Error and success message is prompted with snackbar.
 
-In the project directory, you can run:
+## Project Status
+Completed
+* Task 1: [Upload Users](https://github.com/doom160/springboot-user-service)
+* Task 2: Employee Dashboard Feature
+* Task 3: CRUD Feature
 
-### `yarn start`
+Future
+* Task 4: Better UX When Uploading Large CSV Files
+* Task 5: UI Localization
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Project Screen Shots
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+**Desktop View**
+![Desktop](screenshots/desktop.JPG?raw=true 'Desktop')
 
-### `yarn test`
+**Mobile View**
+![Mobile](screenshots/mobile.JPG?raw=true 'Mobile')
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Installation and Setup Instructions
 
-### `yarn build`
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.  
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Your backend should be running too.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Installation:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+`npm install`  
 
-### `yarn eject`
+2. To Start Server:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+`npm start`  
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. To Visit App:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+`localhost:3000`  
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Reflection
 
-## Learn More
+  - **What was the context for this project? (ie: was this a side project? was this for Turing? was this for an experiment?)**
+    _This project as done as a technical assessment for GovTech Software Engineer Tech Assessment._
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+  - **What did you set out to build?**
+    _I originally planned to implement ExpressJS backend. The MVP was completed but I realized I still lack of Javascript knowledge, which will further set me back on the development. Since I have stronger knowledge on Java, the backend development was less of a blocker to me._
+    \
+    _I was also looking at blueprint toolkit but I have seen reviews that it may not suit mobile view._
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    
+  - **Why was this project challenging and therefore a really good learning experience?**
+    _Despite having years of programming background in the past, the transition to DevOps position has set me back on programming trends. Nevertheless, although I do not have rich background in React and Springboot experience, my programming foundation still stands. I managed to quickly pick up these 2 framework and developed the whole solution with my own effort with examples from internet. I have bettered understood how React and Springboot development works._
+  - **What were some unexpected obstacles?**
+    _I was stucked with React UI portion, namely on the performance. I had a hard time dealing with the state and hooks as the app kept fetching from backend, which I had to look for ways to populate only once. Another problem was handling textbox onChange events, as it kept rendering although I do not need it. I had to introduce a button and memotize the table to reduce the load._
+  - **What tools did you use to implement this project?**
+      - This might seem obvious because you are IN this codebase, but to all other humans now is the time to talk about why you chose webpack instead of create react app, or D3, or vanilla JS instead of a framework etc. Brag about your choices and justify them here.  

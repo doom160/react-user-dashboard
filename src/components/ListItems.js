@@ -8,7 +8,6 @@ import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import { indigo } from '@material-ui/core/colors';
 
 export const mainListItems = (
   <div>
@@ -38,8 +37,6 @@ export const mainListItems = (
     </ListItem>
   </div>
 );
-
-
 
 export const secondaryListItems = (
   <div>
