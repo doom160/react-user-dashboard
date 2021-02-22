@@ -25,6 +25,9 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AvatarList from './AvatarList';
 import EmployeeTable from './EmployeeTable';
+import FileUpload from './FileUpload';
+
+const axios = require('axios');
 
 function Copyright() {
   return (
@@ -127,6 +130,9 @@ const useStyles = makeStyles((theme) => ({
   fixedHeight: {
     height: 240,
   },
+  input: {
+    display: 'none',
+  },
 }));
 
 function UserInput({ type, label /*...*/ }) {
@@ -140,15 +146,46 @@ function UserInput({ type, label /*...*/ }) {
   return [value, input];
 }
 
+
+
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+  const [selectedFile, setFile] = React.useState({ file: null, fileName: null});
+  
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const onUploadFile = () => {
+    // Create an object of formData
+    const formData = new FormData();
+  
+    // Update the formData object
+    formData.append('file',selectedFile);
+    formData.append('name',selectedFile.name);
+  
+    // Request made to the backend api
+    // Send formData object
+    axios.post(process.env.REACT_APP_BACKEND_URL + '/users/upload', formData, {
+      headers: {'Content-Type': 'application/csv'}
+    }).then(function (response) {
+      console.log(response.status);
+    }).catch(function (error) {
+      console.log(error.status);
+    });
+  }
+
+  const onFileChange = event => {
+    // Update the state
+   // console.log(event.target.files[0]);
+    setFile({file: event.target.files[0], fileName: event.target.files[0].name });
+  }
+
   
   const [minSalary, minSalaryInput] = UserInput({ type: "text", label: "Min Salary" });
   const [maxSalary, maxSalaryInput] = UserInput({ type: "text", label: "Max Salary" });
@@ -208,6 +245,14 @@ export default function Dashboard() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Grid container spacing={1} alignItems="flex-end">
+                  <FileUpload/>
+                </Grid>
+              </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Paper className={classes.paper}>
+                <Grid container spacing={1} alignItems="flex-end">
                   <Grid item>
                     {minSalaryInput}
                   </Grid>
@@ -221,7 +266,8 @@ export default function Dashboard() {
                   </Grid>
                 </Grid>
               </Paper>
-            </Grid> 
+            </Grid>
+
             <Grid item xs={12}>
               <MemoizedEmployeeTable minSalary={filterValue.minSalaryValue} maxSalary={filterValue.maxSalaryValue} />
             </Grid>
