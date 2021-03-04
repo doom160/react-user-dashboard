@@ -191,6 +191,7 @@ export default function Dashboard() {
   const [maxSalary, maxSalaryInput] = UserInput({ type: "text", label: "Max Salary" });
   /*const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight); */
   const [filterValue, updateTableValue] = React.useState({minSalaryValue:0, maxSalaryValue:999999});
+  
   const updateTable = () => {
     updateTableValue({minSalaryValue: minSalary,maxSalaryValue: maxSalary});
   };
